@@ -1,4 +1,4 @@
-package com.example.demo.appuser;
+package com.example.demo.userlogin;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,45 +17,44 @@ import java.util.Collections;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
-public class AppUser implements UserDetails {
-
+public class UserLogin implements UserDetails {
 
     @SequenceGenerator(
-            name = "student_sequence",
+            name = "user_login_sequence",
             sequenceName = "student_sequence",
             allocationSize = 1
     )
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "student_sequence"
+            generator = "user_login_sequence"
     )
     private Long id;
-    private String firstName;
-    private String lastName;
+
     private String email;
     private String password;
+
     @Enumerated(EnumType.STRING)
-    private AppUserRole appUserRole;
+    private UserRole userRole;
+
+
     private Boolean locked = false;
     private Boolean enabled = false;
 
-    public AppUser(String firstName,
-                   String lastName,
-                   String email,
-                   String password,
-                   AppUserRole appUserRole) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public UserLogin(String email,
+                     String password,
+                     UserRole userRole)
+    {
+
         this.email = email;
         this.password = password;
-        this.appUserRole = appUserRole;
+        this.userRole = userRole;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority =
-                new SimpleGrantedAuthority(appUserRole.name());
+                new SimpleGrantedAuthority(userRole.name());
         return Collections.singletonList(authority);
     }
 
@@ -67,14 +66,6 @@ public class AppUser implements UserDetails {
     @Override
     public String getUsername() {
         return email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
     }
 
     @Override

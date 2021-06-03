@@ -1,4 +1,4 @@
-package com.example.demo.appuser;
+package com.example.demo.userlogin;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,14 +10,14 @@ import java.util.Optional;
 
 @Repository
 @Transactional(readOnly = true)
-public interface AppUserRepository
-        extends JpaRepository<AppUser, Long> {
+public interface UserLoginRepository
+        extends JpaRepository<UserLogin, Long> {
 
-    Optional<AppUser> findByEmail(String email);
+    Optional<UserLogin> findByEmail(String email);
 
     @Transactional
     @Modifying
-    @Query("UPDATE AppUser a " +
+    @Query("UPDATE UserLogin a " +
             "SET a.enabled = TRUE WHERE a.email = ?1")
     int enableAppUser(String email);
 

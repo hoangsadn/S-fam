@@ -1,4 +1,4 @@
-package com.example.demo.appuser;
+package com.example.demo.userlogin;
 
 import com.example.demo.registration.token.ConfirmationToken;
 import com.example.demo.registration.token.ConfirmationTokenService;
@@ -14,12 +14,12 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class AppUserService implements UserDetailsService {
+public class UserLoginService implements UserDetailsService {
 
     private final static String USER_NOT_FOUND_MSG =
             "user with email %s not found";
 
-    private final AppUserRepository appUserRepository;
+    private final UserLoginRepository appUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
 
@@ -32,9 +32,17 @@ public class AppUserService implements UserDetailsService {
                                 String.format(USER_NOT_FOUND_MSG, email)));
     }
 
-    public String signUpUser(AppUser appUser) {
+    public Boolean checkEmail (String email){
+
         boolean userExists = appUserRepository
-                .findByEmail(appUser.getEmail())
+                .findByEmail(email)
+                .isPresent();
+
+        return !userExists;
+    }
+    public String signUpUser(UserLogin userLogin) {
+        boolean userExists = appUserRepository
+                .findByEmail(userLogin.getEmail())
                 .isPresent();
 
         if (userExists) {
@@ -45,11 +53,11 @@ public class AppUserService implements UserDetailsService {
         }
 
         String encodedPassword = bCryptPasswordEncoder
-                .encode(appUser.getPassword());
+                .encode(userLogin.getPassword());
 
-        appUser.setPassword(encodedPassword);
+        userLogin.setPassword(encodedPassword);
 
-        appUserRepository.save(appUser);
+        appUserRepository.save(userLogin);
 
         String token = UUID.randomUUID().toString();
 
@@ -57,7 +65,7 @@ public class AppUserService implements UserDetailsService {
                 token,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(15),
-                appUser
+                userLogin
         );
 
         confirmationTokenService.saveConfirmationToken(

@@ -14,6 +14,10 @@ public class RegistrationController {
     public String register(@RequestBody RegistrationRequest request) {
         return registrationService.register(request);
     }
+    @GetMapping
+    public String checkEmail(@RequestParam("email") String email) {
+        return registrationService.checkEmail(email);
+    }
 
     @GetMapping(path = "confirm")
     public String confirm(@RequestParam("token") String token) {

@@ -1,8 +1,8 @@
 package com.example.demo.registration;
 
-import com.example.demo.appuser.AppUser;
-import com.example.demo.appuser.AppUserRole;
-import com.example.demo.appuser.AppUserService;
+import com.example.demo.userlogin.UserLogin;
+import com.example.demo.userlogin.UserRole;
+import com.example.demo.userlogin.UserLoginService;
 import com.example.demo.email.EmailSender;
 import com.example.demo.registration.token.ConfirmationToken;
 import com.example.demo.registration.token.ConfirmationTokenService;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class RegistrationService {
 
-    private final AppUserService appUserService;
+    private final UserLoginService userLoginService;
     private final EmailValidator emailValidator;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSender emailSender;
@@ -29,14 +29,11 @@ public class RegistrationService {
             throw new IllegalStateException("email not valid");
         }
 
-        String token = appUserService.signUpUser(
-                new AppUser(
-                        request.getFirstName(),
-                        request.getLastName(),
+        String token = userLoginService.signUpUser(
+                new UserLogin(
                         request.getEmail(),
                         request.getPassword(),
-                        AppUserRole.USER
-
+                        UserRole.USER
                 )
         );
 
@@ -66,8 +63,8 @@ public class RegistrationService {
         }
 
         confirmationTokenService.setConfirmedAt(token);
-        appUserService.enableAppUser(
-                confirmationToken.getAppUser().getEmail());
+        userLoginService.enableAppUser(
+                confirmationToken.getUserLogin().getEmail());
         return "confirmed";
     }
 
@@ -138,5 +135,20 @@ public class RegistrationService {
                 "  </tbody></table><div class=\"yj6qo\"></div><div class=\"adL\">\n" +
                 "\n" +
                 "</div></div>";
+    }
+
+    public String checkEmail(String email) {
+        boolean isValidEmail = emailValidator.
+                test(email);
+
+        if (!isValidEmail) {
+            throw new IllegalStateException("email not valid");
+        }
+
+        Boolean checkEmailResult = userLoginService.checkEmail(email);
+        if (checkEmailResult)
+            return "email ok";
+        else
+            return "email has taken";
     }
 }

@@ -1,6 +1,6 @@
 package com.example.demo.security;
 
-import com.example.demo.appuser.AppUserService;
+import com.example.demo.userlogin.UserLoginService;
 import com.example.demo.jwt.JwtConfig;
 import com.example.demo.jwt.JwtTokenVerifier;
 import com.example.demo.jwt.JwtUsernameAndPasswordAuthenticationFilter;
@@ -18,8 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.crypto.SecretKey;
 
-import static com.example.demo.appuser.AppUserRole.USER;
-
 
 @Configuration
 @EnableWebSecurity
@@ -27,17 +25,17 @@ import static com.example.demo.appuser.AppUserRole.USER;
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
-    private final AppUserService appUserService;
+    private final UserLoginService userLoginService;
     private final SecretKey secretKey;
     private final JwtConfig jwtConfig;
 
     @Autowired
     public ApplicationSecurityConfig(PasswordEncoder passwordEncoder,
-                                     AppUserService appUserService,
+                                     UserLoginService userLoginService,
                                      SecretKey secretKey,
                                      JwtConfig jwtConfig) {
         this.passwordEncoder = passwordEncoder;
-        this.appUserService = appUserService;
+        this.userLoginService = userLoginService;
         this.secretKey = secretKey;
         this.jwtConfig = jwtConfig;
     }
@@ -68,7 +66,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder);
-        provider.setUserDetailsService(appUserService);
+        provider.setUserDetailsService(userLoginService);
         return provider;
     }
 
