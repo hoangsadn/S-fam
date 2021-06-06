@@ -5,6 +5,7 @@ import com.example.demo.userlogin.UserLogin;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.catalina.User;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,10 +16,13 @@ import java.util.Date;
 @NoArgsConstructor
 public class AppUser {
 
-    public AppUser(String fullName, String gender, Date dob) {
+    public AppUser(String email, String fullName, String gender, Date dob,UserLogin userLogin) {
+        this.email = email;
         this.fullName = fullName;
         this.gender = gender;
         this.dob = dob;
+        this.userLogin = userLogin;
+
     }
 
     @SequenceGenerator(
@@ -38,6 +42,7 @@ public class AppUser {
     private Date dob;
     private String pinCode;
     private String imgUrl;
+    private String email;
 
 
 
@@ -45,6 +50,9 @@ public class AppUser {
 //    @JoinColumn(name = "family_id")
 //    private Family family;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="user_login",referencedColumnName = "email")
+    private UserLogin userLogin;
 
 
 }

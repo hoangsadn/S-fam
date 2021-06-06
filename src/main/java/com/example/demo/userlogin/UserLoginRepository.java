@@ -15,6 +15,7 @@ public interface UserLoginRepository
         extends JpaRepository<UserLogin, Long> {
 
     Optional<UserLogin> findByEmail(String email);
+
     @Transactional
     @Modifying
     @Query("UPDATE UserLogin a " +

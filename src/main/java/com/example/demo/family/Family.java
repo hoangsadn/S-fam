@@ -13,12 +13,12 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Family {
 
-    public Family(String name, String key,AppUser owner) {
+    public Family(String name, String key, AppUser owner) {
         this.name = name;
         this.key = key;
         this.owner = owner;
-
     }
+
     @SequenceGenerator(
             name = "family_sequence",
             sequenceName = "family_sequence",
@@ -34,8 +34,8 @@ public class Family {
     private String name;
     private String key;
 
-    @OneToOne
-    @JoinColumn(name= "app_user_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name= "app_user",referencedColumnName = "email")
     private AppUser owner;
 
 

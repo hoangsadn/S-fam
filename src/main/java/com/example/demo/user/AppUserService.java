@@ -1,15 +1,17 @@
 package com.example.demo.user;
 
-import com.example.demo.userlogin.UserLogin;
-import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.Optional;
 
 @Service
-@NoArgsConstructor
+@AllArgsConstructor
 public class AppUserService {
-    public void signUpAppUser(String fullName, String gender, Date dob, UserLogin userLogin) {
 
+    private final AppUserRepository appUserRepository;
+
+    public Optional<AppUser> findAppUserByEmail(String email) {
+        return appUserRepository.findAppUserByEmail(email);
     }
 }

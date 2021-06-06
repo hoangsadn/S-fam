@@ -43,9 +43,10 @@ public class RegistrationService {
         Optional<UserLogin> userLogin = userLoginRepository.findByEmail(request.getEmail());
 
         userLoginService.signUpUser(userLogin);
-        AppUser appUser = new AppUser(request.getFullName(),
+        AppUser appUser = new AppUser(request.getEmail(),
+                request.getFullName(),
                 request.getGender(),
-                request.getDob());
+                request.getDob(),userLogin.get());
 
         appUserRepository.save(appUser);
         return "register success";

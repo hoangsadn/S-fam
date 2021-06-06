@@ -1,6 +1,7 @@
 package com.example.demo.userlogin;
 
 import com.example.demo.user.AppUser;
+import com.example.demo.user.AppUserRepository;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.Collections;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
+@Table(name="user_login")
 public class UserLogin implements UserDetails {
 
     @SequenceGenerator(
@@ -43,9 +45,8 @@ public class UserLogin implements UserDetails {
     private Boolean locked = false;
     private Boolean enabled = false;
 
-//    @OneToOne
-//    @JoinColumn(name="app_user")
-//    private AppUser appUser;
+    @OneToOne
+    private AppUser appUser;
 
 
     public UserLogin(String email,
