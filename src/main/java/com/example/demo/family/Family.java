@@ -13,8 +13,26 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Family {
 
+    public Family(String name, String key,AppUser owner) {
+        this.name = name;
+        this.key = key;
+        this.owner = owner;
+
+    }
+    @SequenceGenerator(
+            name = "family_sequence",
+            sequenceName = "family_sequence",
+            allocationSize = 1
+    )
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "family_sequence"
+    )
     private Long id;
+
+    private String name;
+    private String key;
 
     @OneToOne
     @JoinColumn(name= "app_user_id")

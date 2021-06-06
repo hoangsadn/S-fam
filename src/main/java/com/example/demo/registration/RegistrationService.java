@@ -1,17 +1,25 @@
 package com.example.demo.registration;
 
+import com.example.demo.user.AppUser;
+import com.example.demo.user.AppUserRepository;
+import com.example.demo.user.AppUserService;
 import com.example.demo.userlogin.UserLogin;
+import com.example.demo.userlogin.UserLoginRepository;
 import com.example.demo.userlogin.UserRole;
 import com.example.demo.userlogin.UserLoginService;
 import com.example.demo.email.EmailSender;
 import com.example.demo.registration.token.ConfirmationToken;
 import com.example.demo.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
+@Log4j2
 @Service
 @AllArgsConstructor
 public class RegistrationService {
@@ -20,29 +28,27 @@ public class RegistrationService {
     private final EmailValidator emailValidator;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSender emailSender;
+    private final AppUserRepository appUserRepository;
+    private final UserLoginRepository userLoginRepository;
+
 
     public String register(RegistrationRequest request) {
-        boolean isValidEmail = emailValidator.
-                test(request.getEmail());
+        boolean isValidEmail = userLoginRepository.findByEmail(request.getEmail()).isPresent();
 
         if (!isValidEmail) {
             throw new IllegalStateException("email not valid");
         }
+        userLoginService.setPassAppUser(request.getEmail(),request.getPassword());
 
-        String token = userLoginService.signUpUser(
-                new UserLogin(
-                        request.getEmail(),
-                        request.getPassword(),
-                        UserRole.USER
-                )
-        );
+        Optional<UserLogin> userLogin = userLoginRepository.findByEmail(request.getEmail());
 
-        String link = "http://localhost:8080/api/v1/registration/confirm?token=" + token;
-        emailSender.send(
-                request.getEmail(),
-                buildEmail(request.getFirstName(), link));
+        userLoginService.signUpUser(userLogin);
+        AppUser appUser = new AppUser(request.getFullName(),
+                request.getGender(),
+                request.getDob());
 
-        return token;
+        appUserRepository.save(appUser);
+        return "register success";
     }
 
     @Transactional
@@ -68,7 +74,7 @@ public class RegistrationService {
         return "confirmed";
     }
 
-    private String buildEmail(String name, String link) {
+    private String buildEmail(String code) {
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
                 "\n" +
                 "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
@@ -124,7 +130,7 @@ public class RegistrationService {
                 "      <td width=\"10\" valign=\"middle\"><br></td>\n" +
                 "      <td style=\"font-family:Helvetica,Arial,sans-serif;font-size:19px;line-height:1.315789474;max-width:560px\">\n" +
                 "        \n" +
-                "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Hi " + name + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> Thank you for registering. Please click on the below link to activate your account: </p><blockquote style=\"Margin:0 0 20px 0;border-left:10px solid #b1b4b6;padding:15px 0 0.1px 15px;font-size:19px;line-height:25px\"><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> <a href=\"" + link + "\">Activate Now</a> </p></blockquote>\n Link will expire in 15 minutes. <p>See you soon</p>" +
+                "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Hi " + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> Thank you for registering. Please input the pin code on the below to activate your account: </p><blockquote style=\"Margin:0 0 20px 0;border-left:10px solid #b1b4b6;padding:15px 0 0.1px 15px;font-size:19px;line-height:25px\"><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> <a>" + code + "</a> </p></blockquote>\n Code will expire in 15 minutes. <p>See you soon</p>" +
                 "        \n" +
                 "      </td>\n" +
                 "      <td width=\"10\" valign=\"middle\"><br></td>\n" +
@@ -144,11 +150,24 @@ public class RegistrationService {
         if (!isValidEmail) {
             throw new IllegalStateException("email not valid");
         }
-
         Boolean checkEmailResult = userLoginService.checkEmail(email);
-        if (checkEmailResult)
-            return "email ok";
-        else
-            return "email has taken";
+        log.info("ssss",checkEmailResult);
+        if (!checkEmailResult) {
+            throw new IllegalStateException("email not valid");
+        }
+
+        UserLogin userLogin = new UserLogin(
+               email,
+                UserRole.USER
+        );
+        userLoginRepository.save(userLogin);
+        String token = userLoginService.getToken(userLogin);
+
+        emailSender.send(
+                email,
+                buildEmail(token));
+
+        return token;
+
     }
 }

@@ -1,7 +1,7 @@
 package com.example.demo.user;
 
 
-import com.example.demo.family.Family;
+import com.example.demo.userlogin.UserLogin;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +15,12 @@ import java.util.Date;
 @NoArgsConstructor
 public class AppUser {
 
+    public AppUser(String fullName, String gender, Date dob) {
+        this.fullName = fullName;
+        this.gender = gender;
+        this.dob = dob;
+    }
+
     @SequenceGenerator(
             name = "user_sequence",
             sequenceName = "member_sequence",
@@ -26,19 +32,18 @@ public class AppUser {
             generator = "user_sequence"
     )
     private Long id;
+
     private String fullName;
     private String gender;
-    private Date Dob;
+    private Date dob;
     private String pinCode;
     private String imgUrl;
 
 
-    @ManyToOne
-    @JoinColumn(name = "family_id")
-    private Family family;
 
-
-
+//    @ManyToOne
+//    @JoinColumn(name = "family_id")
+//    private Family family;
 
 
 

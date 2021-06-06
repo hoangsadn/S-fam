@@ -3,19 +3,26 @@ package com.example.demo.userlogin;
 import com.example.demo.registration.token.ConfirmationToken;
 import com.example.demo.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
+@Log4j2
+@PersistenceContext
 
 @Service
 @AllArgsConstructor
 public class UserLoginService implements UserDetailsService {
-
+    private EntityManager em;
     private final static String USER_NOT_FOUND_MSG =
             "user with email %s not found";
 
@@ -37,46 +44,47 @@ public class UserLoginService implements UserDetailsService {
         boolean userExists = appUserRepository
                 .findByEmail(email)
                 .isPresent();
-
         return !userExists;
     }
-    public String signUpUser(UserLogin userLogin) {
-        boolean userExists = appUserRepository
-                .findByEmail(userLogin.getEmail())
-                .isPresent();
-
-        if (userExists) {
-            // TODO check of attributes are the same and
-            // TODO if email not confirmed send confirmation email.
-
-            throw new IllegalStateException("email already taken");
-        }
-
-        String encodedPassword = bCryptPasswordEncoder
-                .encode(userLogin.getPassword());
-
-        userLogin.setPassword(encodedPassword);
-
-        appUserRepository.save(userLogin);
-
-        String token = UUID.randomUUID().toString();
-
+    public String getToken(UserLogin userLogin){
+        Random random = new Random();
+        Integer token = random.nextInt(9999)+1000;
         ConfirmationToken confirmationToken = new ConfirmationToken(
-                token,
+                token.toString(),
                 LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(15),
                 userLogin
         );
+        log.info("ssss",confirmationToken.toString());
+        log.info("ssss",userLogin.toString());
 
         confirmationTokenService.saveConfirmationToken(
                 confirmationToken);
 
-//        TODO: SEND EMAIL
+        return token.toString();
+    }
+    public String signUpUser(Optional<UserLogin> userLogin) {
+        if (!userLogin.isPresent())
+            throw new IllegalStateException("email not valid");
 
-        return token;
+
+        String encodedPassword = bCryptPasswordEncoder
+                .encode(userLogin.get().getPassword());
+
+        userLogin.get().setPassword(encodedPassword);
+
+        appUserRepository.save(userLogin.get());
+
+        return "sign up success";
+
     }
 
     public int enableAppUser(String email) {
         return appUserRepository.enableAppUser(email);
+    }
+    public int setPassAppUser(String email,String pass){
+         appUserRepository.setPassAppUser(email,pass);
+         em.clear();
+         return 0;
     }
 }

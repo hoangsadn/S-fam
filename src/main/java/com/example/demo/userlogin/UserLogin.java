@@ -1,5 +1,6 @@
 package com.example.demo.userlogin;
 
+import com.example.demo.user.AppUser;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,23 +33,32 @@ public class UserLogin implements UserDetails {
     private Long id;
 
     private String email;
-    private String password;
+
+
+    private String password="";
 
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-
     private Boolean locked = false;
     private Boolean enabled = false;
 
+//    @OneToOne
+//    @JoinColumn(name="app_user")
+//    private AppUser appUser;
+
+
     public UserLogin(String email,
-                     String password,
-                     UserRole userRole)
+                    // String password,
+                     UserRole userRole
+//                     ,AppUser appUser
+    )
     {
 
         this.email = email;
-        this.password = password;
+        //this.password = password;
         this.userRole = userRole;
+        //this.appUser = appUser;
     }
 
     @Override
@@ -87,4 +97,6 @@ public class UserLogin implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
+
+
 }
