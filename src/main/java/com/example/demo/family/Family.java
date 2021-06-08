@@ -35,7 +35,7 @@ public class Family {
     private String key;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name= "app_user",referencedColumnName = "email")
+    @JoinColumn(name= "owner",referencedColumnName = "email")
     private AppUser owner;
 
 

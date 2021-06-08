@@ -17,13 +17,9 @@ public class FamilyController {
     public String createFamily(@RequestBody FamilyRequest familyRequest){
         return familyService.createFamily(familyRequest);
     }
-//    @PostMapping(path = "create")
-//    public String createFamily(@RequestParam(value = "id") Long id){
-//        return familyService.createFamily(id);
-//    }
 
-//    @PostMapping(path ="join")
-//    public String joinFamily(@RequestBody FamilyRequest familyRequest){
-//        return familyService.joinFamily(familyRequest);
-//    }
+    @PostMapping(path ="join")
+    public String joinFamily(@RequestBody FamilyRequest familyRequest){
+        return familyService.joinFamily(familyRequest);
+    }
 }

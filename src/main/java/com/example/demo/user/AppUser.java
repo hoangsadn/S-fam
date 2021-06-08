@@ -1,20 +1,23 @@
 package com.example.demo.user;
 
 
+import com.example.demo.event.Event;
+import com.example.demo.family.Family;
 import com.example.demo.userlogin.UserLogin;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.catalina.User;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class AppUser {
+public class AppUser implements Serializable {
 
     public AppUser(String email, String fullName, String gender, Date dob,UserLogin userLogin) {
         this.email = email;
@@ -46,13 +49,18 @@ public class AppUser {
 
 
 
-//    @ManyToOne
-//    @JoinColumn(name = "family_id")
-//    private Family family;
+    @ManyToOne
+    @JoinColumn(name = "family_id")
+    private Family family;
+
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="user_login",referencedColumnName = "email")
     private UserLogin userLogin;
+
+    @ManyToMany
+    Set<Event> eventSet;
 
 
 }
