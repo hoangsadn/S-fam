@@ -2,6 +2,7 @@ package com.example.demo.event;
 
 import com.example.demo.user.AppUser;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,16 +12,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 public class Event {
-    public Event(String name, Set<AppUser> appUserSet, Date startTime, Date endTime, Date day, Date timeCreateEvent, String detail) {
-        this.name = name;
-        this.appUserSet = appUserSet;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.day = day;
-        this.timeCreateEvent = timeCreateEvent;
-        Detail = detail;
-    }
 
     @Id
     @GeneratedValue(
@@ -29,18 +22,28 @@ public class Event {
     private Long id;
 
     private String name;
-
-    @ManyToMany
-    @JoinTable(name="event_user",
-            joinColumns = @JoinColumn(name="event_id"),
-    inverseJoinColumns = @JoinColumn(name = "app_user_id"))
-    private Set<AppUser> appUserSet;
-
-
+    private Date day;
     private Date startTime;
     private Date endTime;
-    private Date day;
+
+
+    @ManyToMany()
+    @JoinTable(name="event_user",
+            joinColumns = @JoinColumn(name="event_id"),
+            inverseJoinColumns = @JoinColumn(name = "app_user_id"))
+    private Set<AppUser> appUserSet;
+
+    private String detail;
     private Date timeCreateEvent;
-    private String Detail;
+
+    public Event(String name, Date day, Date startTime, Date endTime,Set<AppUser> appUserSet,  String detail) {
+        this.name = name;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.day = day;
+        this.appUserSet = appUserSet;
+        this.detail = detail;
+    }
+
 
 }

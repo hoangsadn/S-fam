@@ -59,7 +59,10 @@ public class AppUser implements Serializable {
     @JoinColumn(name="user_login",referencedColumnName = "email")
     private UserLogin userLogin;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name= "event_user",
+        joinColumns = @JoinColumn(name="app_user_id"),
+        inverseJoinColumns = @JoinColumn(name="event_id"))
     Set<Event> eventSet;
 
 
