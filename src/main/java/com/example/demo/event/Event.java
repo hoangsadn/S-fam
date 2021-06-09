@@ -27,21 +27,21 @@ public class Event {
     private Date endTime;
 
 
-    @ManyToMany()
-    @JoinTable(name="event_user",
-            joinColumns = @JoinColumn(name="event_id"),
-            inverseJoinColumns = @JoinColumn(name = "app_user_id"))
-    private Set<AppUser> appUserSet;
+//    @ManyToMany()
+//    @JoinTable(name="event_user",
+//            joinColumns = @JoinColumn(name="event_id"),
+//            inverseJoinColumns = @JoinColumn(name = "app_user_id"))
+   // private Set<AppUser> appUserSet;
 
     private String detail;
     private Date timeCreateEvent;
 
-    public Event(String name, Date day, Date startTime, Date endTime,Set<AppUser> appUserSet,  String detail) {
+    public Event(String name, Date day, Date startTime, Date endTime,  String detail) {
         this.name = name;
         this.startTime = startTime;
         this.endTime = endTime;
         this.day = day;
-        this.appUserSet = appUserSet;
+       // this.appUserSet = appUserSet;
         this.detail = detail;
     }
 

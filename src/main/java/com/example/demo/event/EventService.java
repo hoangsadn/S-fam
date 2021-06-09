@@ -22,19 +22,19 @@ public class EventService {
         //Event event = objectMapper.readValue(request,Event.class);
 
 
-        for (String email : request.getAppUserSet()){
-            appUserSet.add(appUserService.findAppUserByEmail(email).get());
-        }
+//        for (String email : request.getAppUserSet()){
+//            appUserSet.add(appUserService.findAppUserByEmail(email).get());
+//        }
 
         Event event = new Event(request.getName(),
                 request.getDay(),
                 request.getStartTime(),
                 request.getEndTime(),
-                appUserSet,
+        //        appUserSet,
                 request.getDetail());
 
         eventRepository.save(event);
-        entityManager.clear();
+       // entityManager.clear();
         return "ok";
     }
 }
