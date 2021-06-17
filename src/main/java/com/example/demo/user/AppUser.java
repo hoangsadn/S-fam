@@ -11,6 +11,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -29,14 +31,14 @@ public class AppUser implements Serializable {
     }
 
     @SequenceGenerator(
-            name = "user_sequence",
-            sequenceName = "member_sequence",
-            allocationSize = 1
+            name = "app_user_sequence",
+            sequenceName = "app_user_sequence",
+            allocationSize = 10
     )
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "user_sequence"
+            generator = "app_user_sequence"
     )
     private Long id;
 
@@ -47,23 +49,27 @@ public class AppUser implements Serializable {
     private String imgUrl;
     private String email;
 
-
+    public Optional<String> getUserProfileImageLink() {
+        return Optional.ofNullable(imgUrl);
+    }
 
     @ManyToOne
-    @JoinColumn(name = "family_id")
+    @JoinColumn(name = "family_id",referencedColumnName = "id")
     private Family family;
-
 
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="user_login",referencedColumnName = "email")
     private UserLogin userLogin;
-//
+
 //    @ManyToMany(cascade = CascadeType.MERGE)
 //    @JoinTable(name= "event_user",
 //        joinColumns = @JoinColumn(name="app_user_id"),
 //        inverseJoinColumns = @JoinColumn(name="event_id"))
-//    Set<Event> eventSet;
+
+
+    @ManyToMany(mappedBy = "appUserSet")
+    Set<Event> eventSet = new HashSet<>();
 
 
 }

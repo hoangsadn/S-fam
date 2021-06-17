@@ -1,15 +1,16 @@
+
 server:
   error:
     include-message: always
     include-binding-errors: always
+  port: 80
 
 spring:
-  profiles:
-    active: prod
   datasource:
     password: thanhtrung123
-    url: jdbc:postgresql://localhost:5432/registration
+    url: jdbc:postgresql://database-s-fam.crptcm88verz.ap-southeast-1.rds.amazonaws.com:5432/postgres
     username: postgres
+
   jpa:
     hibernate:
       ddl-auto: create-drop

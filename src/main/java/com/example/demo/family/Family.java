@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -38,5 +40,11 @@ public class Family {
     @JoinColumn(name= "owner",referencedColumnName = "email")
     private AppUser owner;
 
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "family")
+    private Set<AppUser> memberSet = new HashSet<>();
+
+    public void addMember(AppUser appUser){
+        memberSet.add(appUser);
+    }
 
 }

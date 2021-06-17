@@ -18,8 +18,18 @@ public class AppUserService {
     }
 
     public void insertFamily(AppUser appUser, Family family){
-        log.info("ccccc",appUser.toString());
         appUser.setFamily(family);
         appUserRepository.save(appUser);
     }
+
+    public AppUser getInfoUser(String email){
+        AppUser appUser = appUserRepository.findAppUserByEmail(email).get();
+        return appUser;
+    }
+
+    public void setImgUrl(AppUser appUser,String imgUrl){
+        appUser.setImgUrl(imgUrl);
+        appUserRepository.save(appUser);
+    }
+
 }

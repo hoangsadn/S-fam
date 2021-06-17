@@ -37,6 +37,8 @@ public class FamilyService {
                 appUser.get()
         );
         familyRepository.save(family);
+        appUserService.insertFamily(appUser.get(),family);
+
 
         return familyKey;
 

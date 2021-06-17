@@ -7,4 +7,3 @@ insert into app_user values
 (4,'2017-11-11','abc4@gmail.com','đẹp trai','male',null,null,null,'abc4@gmail.com')
 
 
-

@@ -48,7 +48,7 @@ public class UserLoginService implements UserDetailsService {
     }
     public String getToken(UserLogin userLogin){
         Random random = new Random();
-        Integer token = random.nextInt(9999)+1000;
+        Integer token = random.nextInt(9000)+1000;
         ConfirmationToken confirmationToken = new ConfirmationToken(
                 token.toString(),
                 LocalDateTime.now(),
