@@ -61,7 +61,7 @@ public class ScheduleService {
 
         Optional<Schedule> personSchedule = scheduleRepository.findByIdAndAppUserScheduleId(id,appUser.get().getId());
         if (!personSchedule.isPresent()) {
-            return "id not found";
+            return "id and app user not found";
         }
         personSchedule.get().setName(request.getName());
         personSchedule.get().setStartDay(request.getStartDay());

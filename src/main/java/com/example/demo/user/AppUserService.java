@@ -1,12 +1,20 @@
 package com.example.demo.user;
 
+import com.example.demo.amazon.BucketName;
+import com.example.demo.amazon.FileStore;
+import com.example.demo.amazon.ImageService;
 import com.example.demo.family.Family;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Optional;
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.util.*;
+
+import static org.apache.http.entity.ContentType.*;
+
 @Log4j2
 @Service
 @AllArgsConstructor

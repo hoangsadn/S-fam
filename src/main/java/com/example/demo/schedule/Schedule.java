@@ -2,6 +2,7 @@ package com.example.demo.schedule;
 
 import com.example.demo.event.EventRepeatType;
 import com.example.demo.user.AppUser;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,8 +43,7 @@ public class Schedule {
     private Set<ScheduleRepeatType> repeatType;
 
     @ManyToOne
-    @JsonIgnoreProperties({"fullName","gender","dob","pinCode",
-            "family","scheduleSet","userLogin","eventSet"})
+    @JsonIgnore
     @JoinColumn(
             nullable = false,
             name = "app_user_id",

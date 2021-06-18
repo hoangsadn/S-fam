@@ -4,11 +4,14 @@ import com.amazonaws.services.ecs.model.Resource;
 import com.example.demo.user.AppUser;
 import com.example.demo.user.AppUserRepository;
 import com.example.demo.user.AppUserService;
+import javassist.compiler.ast.Pair;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -23,7 +26,7 @@ public class ImageService {
     private final FileStore fileStore;
     private final AppUserService appUserService;
 
-    void uploadUserProfileImage(String email, MultipartFile file) {
+    public void uploadUserProfileImage(String email, MultipartFile file) {
         // 1. Check if image is not empty
         if (file.isEmpty()) {
             throw new IllegalStateException("Cannot upload empty file [ " + file.getSize() + "]");
@@ -59,6 +62,7 @@ public class ImageService {
         }
 
     }
+
     byte[] downloadUserProfileImage(String email) {
         AppUser appUser = appUserService.findAppUserByEmail(email).get();
 

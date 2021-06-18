@@ -3,6 +3,8 @@ package com.example.demo.user;
 
 import com.example.demo.event.Event;
 import com.example.demo.family.Family;
+import com.example.demo.item.Item;
+import com.example.demo.note.Note;
 import com.example.demo.schedule.Schedule;
 import com.example.demo.userlogin.UserLogin;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -64,7 +66,13 @@ public class AppUser implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "appUserSchedule")
     //@JsonIgnoreProperties({"app_user"})
-    private Set<Schedule> scheduleSet = new HashSet<>();
+    private Set<Schedule> schedules = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "appUserNote")
+    private Set<Note> notes  = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "appUserItem")
+    private Set<Item> items  = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="user_login",referencedColumnName = "email")

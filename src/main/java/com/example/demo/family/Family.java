@@ -39,7 +39,10 @@ public class Family {
     private String key;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("family")
+    @JsonIgnoreProperties({"fullName","gender","dob","pinCode",
+            "family","schedules","userLogin","eventSet","appUserSchedule"
+            ,"notes","appUserNote",
+            "items","appUserItem"})
     @JoinColumn(name= "owner",referencedColumnName = "email")
     private AppUser owner;
 
