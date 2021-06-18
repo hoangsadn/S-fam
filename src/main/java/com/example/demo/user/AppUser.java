@@ -3,17 +3,16 @@ package com.example.demo.user;
 
 import com.example.demo.event.Event;
 import com.example.demo.family.Family;
+import com.example.demo.schedule.Schedule;
 import com.example.demo.userlogin.UserLogin;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -49,14 +48,23 @@ public class AppUser implements Serializable {
     private String imgUrl;
     private String email;
 
+    @ElementCollection
+    private List<String> setImg;
+
     public Optional<String> getUserProfileImageLink() {
         return Optional.ofNullable(imgUrl);
+    }
+    public List<String> getUserSetImg() {
+        return setImg;
     }
 
     @ManyToOne
     @JoinColumn(name = "family_id",referencedColumnName = "id")
     private Family family;
 
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "appUserSchedule")
+    //@JsonIgnoreProperties({"app_user"})
+    private Set<Schedule> scheduleSet = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="user_login",referencedColumnName = "email")

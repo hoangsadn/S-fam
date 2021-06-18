@@ -1,32 +1,48 @@
-package com.example.demo.personSchedule;
+package com.example.demo.schedule;
 
-import com.example.demo.event.Event;
 import com.example.demo.event.EventRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path="api/v1/schedule")
 @AllArgsConstructor
-public class PersonScheduleController {
-    private final PersonScheduleService scheduleService;
+public class ScheduleController {
+    private final ScheduleService scheduleService;
+
+    @GetMapping()
+    public List<Schedule> getSchedules(){
+        return scheduleService.getPersonSchedules();
+    }
+
     @GetMapping(path="{id}")
-    public PersonSchedule getEventById(@PathVariable("id") Long id){
+    public Schedule getScheduleById(@PathVariable("id") Long id){
         return scheduleService.getPersonScheduleById(id);
     }
 
-    @PostMapping(path = "create")
-    public String createEvent(@RequestBody EventRequest eventRequest){
-        return scheduleService.createPersonSchedule(eventRequest);
+    @PostMapping(path = "{email}/create")
+    public String createSchedule(@PathVariable("email") String email,
+                                 @RequestBody ScheduleRequest scheduleRequest){
+        return scheduleService.createPersonSchedule(email,scheduleRequest);
     }
 
     @GetMapping(path = "delete/{id}")
-    public String delEvent(@PathVariable("id") Long id){
+    public String delSchedule(@PathVariable("id") Long id){
         return scheduleService.delPersonSchedule(id);
     }
 
-    @PutMapping(path = "edit/{id}")
-    public String editEvent(@PathVariable("id") Long id,@RequestBody EventRequest eventRequest) {
-        return personSchedule.editEvent(id,eventRequest);
+    @PutMapping(path = "{email}/edit/{id}")
+    public String editSchedule(@PathVariable("email")String email, @PathVariable("id") Long id,@RequestBody ScheduleRequest scheduleRequest) {
+        return scheduleService.editPersonSchedule(email,id,scheduleRequest);
     }
+
+//    @GetMapping()
+//    public List<Schedule> getSchedulesByEmail(@RequestParam("email") String email){
+//        return scheduleService.getPersonSchedulesByEmail(email);
+//    }
+
+
+
 }

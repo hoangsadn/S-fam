@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -29,6 +30,9 @@ public class EventService {
                 request.getDay(),
                 request.getStartTime(),
                 request.getEndTime(),
+                request.getRepeatType(),
+                request.getEventRemindType(),
+                request.getRemindNum(),
                 appUserSet,
                 request.getDetail());
 
@@ -63,6 +67,9 @@ public class EventService {
         event.get().setDay(request.getDay());
         event.get().setAppUserSet(appUserSet);
         event.get().setDetail(request.getDetail());
+        event.get().setRepeatType(request.getRepeatType());
+        event.get().setEventRemindType(request.getEventRemindType());
+        event.get().setRemindNum(request.getRemindNum());
         event.get().setStartTime(request.getStartTime());
         event.get().setEndTime(request.getEndTime());
 
@@ -73,4 +80,21 @@ public class EventService {
 
         return "edit success";
     }
+
+    public Event getEventById(Long id)
+    {
+        return eventRepository.findById(id).get();
+    }
+
+    public List<Event> getEvents() {
+        return eventRepository.findAll();
+    }
+
+//    public List<Event> getEventByEmail(String email) throws IllegalAccessException {
+//        Optional<AppUser> appUser = appUserService.findAppUserByEmail(email);
+//        if (!appUser.isPresent()) {
+//            throw new IllegalAccessException("not found");
+//        }
+//        return eventRepository.findAllByAppUserSetIsContaining(appUser.get());
+//    }
 }
