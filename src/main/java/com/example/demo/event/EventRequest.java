@@ -23,4 +23,7 @@ public class EventRequest {
     private final Date endTime;
     private final Date day;
     private final String detail;
+    private final EventRepeatType repeatType;
+    private final Integer remindNum;
+    private final EventRemindType eventRemindType;
 }

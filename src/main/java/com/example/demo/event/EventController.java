@@ -1,7 +1,6 @@
 package com.example.demo.event;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -10,6 +9,11 @@ import org.springframework.web.bind.annotation.*;
 public class EventController {
 
     private final EventService eventService;
+    @GetMapping(path="{id}")
+    public Event getEventById(@PathVariable("id") Long id){
+        return eventService.getEventById(id);
+    }
+
     @PostMapping(path = "create")
     public String createEvent(@RequestBody EventRequest eventRequest){
         return eventService.createEvent(eventRequest);

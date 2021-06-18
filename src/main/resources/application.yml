@@ -4,8 +4,6 @@ server:
     include-binding-errors: always
 
 spring:
-  profiles:
-    active: prod
   datasource:
     password: thanhtrung123
     url: jdbc:postgresql://localhost:5432/registration

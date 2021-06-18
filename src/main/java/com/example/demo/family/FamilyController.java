@@ -1,10 +1,7 @@
 package com.example.demo.family;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -12,6 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path="api/v1/family")
 public class FamilyController {
     private final FamilyService familyService;
+
+    @GetMapping(path="{id}")
+    public Family getFamilyById(@PathVariable("id") Long id){
+        return familyService.getFamilyById(id);
+    }
 
     @PostMapping(path = "create")
     public String createFamily(@RequestBody FamilyRequest familyRequest){

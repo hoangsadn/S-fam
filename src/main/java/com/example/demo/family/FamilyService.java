@@ -60,4 +60,7 @@ public class FamilyService {
     }
 
 
+    public Family getFamilyById(Long id) {
+        return familyRepository.findById(id).get();
+    }
 }

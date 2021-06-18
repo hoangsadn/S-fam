@@ -1,6 +1,8 @@
 package com.example.demo.family;
 
 import com.example.demo.user.AppUser;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,10 +39,12 @@ public class Family {
     private String key;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("family")
     @JoinColumn(name= "owner",referencedColumnName = "email")
     private AppUser owner;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "family")
+    @JsonIgnoreProperties({"family","eventSet"})
     private Set<AppUser> memberSet = new HashSet<>();
 
     public void addMember(AppUser appUser){

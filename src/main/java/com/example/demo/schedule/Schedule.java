@@ -1,5 +1,7 @@
-package com.example.demo.event;
+package com.example.demo.personSchedule;
 
+import com.example.demo.event.EventRemindType;
+import com.example.demo.event.EventRepeatType;
 import com.example.demo.user.AppUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -12,22 +14,23 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter
-@Setter
 @Entity
+@Setter
+@Getter
 @NoArgsConstructor
-public class Event {
+
+public class PersonSchedule {
 
 
     @SequenceGenerator(
-            name = "event_sequence",
+            name = "person_schedule_sequence",
             sequenceName = "event_sequence",
             allocationSize = 10
     )
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "event_sequence"
+            generator = "person_schedule_sequence"
     )
 
     private Long id;
@@ -37,34 +40,22 @@ public class Event {
     private Date startTime;
     private Date endTime;
     private EventRepeatType repeatType;
-    private Integer remindNum;
-    private EventRemindType eventRemindType;
 
-    public Event(String name, Date day, Date startTime, Date endTime, EventRepeatType repeatType,
-                 EventRemindType eventRemindType, Integer remindNum,
-                 Set<AppUser> appUserSet, String detail) {
+    public PersonSchedule(String name, Date day, Date startTime, Date endTime, EventRepeatType repeatType,
+                  String detail) {
         this.name = name;
         this.day = day;
         this.startTime = startTime;
         this.endTime = endTime;
         this.repeatType = repeatType;
-        this.remindNum = remindNum;
-        this.eventRemindType = eventRemindType;
-        this.appUserSet = appUserSet;
         this.detail = detail;
         this.timeCreateEvent = LocalDate.now();
     }
 
-    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
-    @JsonIgnore
-    @JoinTable(name="event_user",
-            joinColumns = @JoinColumn(name="event_id"),
-            inverseJoinColumns = @JoinColumn(name = "app_user_id"))
-    private Set<AppUser> appUserSet = new HashSet<>();
+
 
     private String detail;
     private LocalDate timeCreateEvent;
-
 
 
 }
