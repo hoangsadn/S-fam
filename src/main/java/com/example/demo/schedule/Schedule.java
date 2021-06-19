@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -63,11 +64,11 @@ public class Schedule {
         this.endTime = endTime;
         this.repeatType = repeatType;
         this.detail = detail;
-        this.timeCreateEvent = LocalDate.now();
+        this.timeCreateEvent = LocalDateTime.now();
     }
 
     private String detail;
-    private LocalDate timeCreateEvent;
+    private LocalDateTime timeCreateEvent;
 
 
 }

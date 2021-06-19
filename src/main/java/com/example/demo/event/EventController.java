@@ -32,7 +32,7 @@ public class EventController {
         return eventService.createEvent(eventRequest);
     }
 
-    @GetMapping(path = "delete/{id}")
+    @DeleteMapping(path = "delete/{id}")
     public String delEvent(@PathVariable("id") Long id){
         return eventService.delEvent(id);
     }

@@ -7,6 +7,7 @@ import com.example.demo.item.Item;
 import com.example.demo.note.Note;
 import com.example.demo.schedule.Schedule;
 import com.example.demo.userlogin.UserLogin;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,9 +54,11 @@ public class AppUser implements Serializable {
     @ElementCollection
     private List<String> setImg;
 
+    @JsonIgnore
     public Optional<String> getUserProfileImageLink() {
         return Optional.ofNullable(imgUrl);
     }
+
     public List<String> getUserSetImg() {
         return setImg;
     }

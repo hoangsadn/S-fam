@@ -24,7 +24,7 @@ public class NoteController {
         return noteService.createNote(email,request);
     }
 
-    @GetMapping(path = "delete/{id}")
+    @DeleteMapping(path = "delete/{id}")
     public String delSchedule(@PathVariable("id") Long id){
         return noteService.delNote(id);
     }

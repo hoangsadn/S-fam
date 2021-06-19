@@ -43,12 +43,22 @@ public class ImageController {
     }
 
     @PostMapping(
-            path = "{email}/images/upload",
+            path = "{album}/album/upload",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public void uploadUserProfileImages(@PathVariable("email") String email,
+    public void uploadAlbumImages(@PathVariable("album") Long id,
                                         @RequestParam("files") MultipartFile[] files) {
-        imageService.uploadUserProfileImages(email, files);
+        imageService.uploadAlbumImages(id, files);
+    }
+
+    @PostMapping(
+            path = "{email}/item/{item}/upload",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public void uploadItemImage(@PathVariable("item") Long id,
+                                        @RequestParam("file") MultipartFile file) {
+        imageService.uploadItemImage(id, file);
     }
 }

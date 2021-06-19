@@ -24,7 +24,7 @@ public class ItemController {
         return itemService.createNote(email,request);
     }
 
-    @GetMapping(path = "delete/{id}")
+    @DeleteMapping(path = "delete/{id}")
     public String delSchedule(@PathVariable("id") Long id){
         return itemService.delNote(id);
     }
@@ -39,15 +39,5 @@ public class ItemController {
         return itemService.editNote(email,id,request);
     }
 
-    @PostMapping(
-            path = "{email}/upload",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
 
-    public String uploadUserProfileImage(@PathVariable("email") String email,
-                                       @RequestBody ItemRequest request,
-                                       @RequestParam("file") MultipartFile file) {
-       return itemService.uploadUserProfileImage(email,request, file);
-    }
 }

@@ -28,7 +28,7 @@ public class ScheduleController {
         return scheduleService.createPersonSchedule(email,scheduleRequest);
     }
 
-    @GetMapping(path = "delete/{id}")
+    @DeleteMapping(path = "delete/{id}")
     public String delSchedule(@PathVariable("id") Long id){
         return scheduleService.delPersonSchedule(id);
     }

@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -51,7 +52,7 @@ public class Event {
         this.eventRemindType = eventRemindType;
         this.appUserSet = appUserSet;
         this.detail = detail;
-        this.timeCreateEvent = LocalDate.now();
+        this.timeCreateEvent = LocalDateTime.now();
     }
 
     @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
@@ -62,7 +63,7 @@ public class Event {
     private Set<AppUser> appUserSet = new HashSet<>();
 
     private String detail;
-    private LocalDate timeCreateEvent;
+    private LocalDateTime timeCreateEvent;
 
 
 

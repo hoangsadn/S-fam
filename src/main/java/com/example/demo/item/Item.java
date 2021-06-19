@@ -14,13 +14,10 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 public class Item {
-    public Item(String name, String detail, AppUser appUserItem,String path,String imgName) {
+    public Item(String name, String detail, AppUser appUserItem) {
         this.name = name;
         this.detail = detail;
         this.appUserItem = appUserItem;
-        this.path = path;
-        this.imgName = imgName;
-
     }
 
     @SequenceGenerator(
@@ -38,7 +35,6 @@ public class Item {
 
     private String name;
     private String detail;
-    private String path;
     private String imgName;
 
     @ManyToOne
