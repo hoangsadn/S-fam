@@ -74,7 +74,7 @@ public class EventService {
         event.get().setEndTime(request.getEndTime());
 
         if (!event.isPresent()) {
-            return "id and app user not found";
+            return "id not found";
         }
         eventRepository.save(event.get());
 

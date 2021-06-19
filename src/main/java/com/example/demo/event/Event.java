@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,14 +32,14 @@ public class Event {
     private Long id;
 
     private String name;
-    private Date day;
-    private Date startTime;
-    private Date endTime;
+    private String day;
+    private String startTime;
+    private String endTime;
     private EventRepeatType repeatType;
     private Integer remindNum;
     private EventRemindType eventRemindType;
 
-    public Event(String name, Date day, Date startTime, Date endTime, EventRepeatType repeatType,
+    public Event(String name, String day, String startTime, String endTime, EventRepeatType repeatType,
                  EventRemindType eventRemindType, Integer remindNum,
                  Set<AppUser> appUserSet, String detail) {
         this.name = name;

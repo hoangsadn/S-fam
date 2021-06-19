@@ -34,10 +34,10 @@ public class Schedule {
     private Long id;
 
     private String name;
-    private Date startDay;
-    private Date endDay;
-    private Date startTime;
-    private Date endTime;
+    private String startDay;
+    private String endDay;
+    private String startTime;
+    private String endTime;
 
     @ElementCollection
     private Set<ScheduleRepeatType> repeatType;
@@ -51,8 +51,8 @@ public class Schedule {
     )
     private AppUser appUserSchedule;
 
-    public Schedule(AppUser appUser,String name, Date startDay,Date endDay,
-                    Date startTime, Date endTime,
+    public Schedule(AppUser appUser,String name, String startDay,String endDay,
+                    String startTime, String endTime,
                     Set<ScheduleRepeatType> repeatType,
                     String detail) {
         this.appUserSchedule = appUser;

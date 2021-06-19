@@ -22,7 +22,7 @@ import java.util.*;
 @NoArgsConstructor
 public class AppUser implements Serializable {
 
-    public AppUser(String email, String fullName, String gender, Date dob,UserLogin userLogin) {
+    public AppUser(String email, String fullName, String gender, String dob,UserLogin userLogin) {
         this.email = email;
         this.fullName = fullName;
         this.gender = gender;
@@ -45,7 +45,7 @@ public class AppUser implements Serializable {
 
     private String fullName;
     private String gender;
-    private Date dob;
+    private String dob;
     private String pinCode;
     private String imgUrl;
     private String email;

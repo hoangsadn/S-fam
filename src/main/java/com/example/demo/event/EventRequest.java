@@ -19,9 +19,9 @@ import java.util.Set;
 public class EventRequest {
     private final String name;
     private final Set<String> appUserSet;
-    private final Date startTime;
-    private final Date endTime;
-    private final Date day;
+    private final String startTime;
+    private final String endTime;
+    private final String day;
     private final String detail;
     private final EventRepeatType repeatType;
     private final Integer remindNum;

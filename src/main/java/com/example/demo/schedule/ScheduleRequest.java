@@ -8,7 +8,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.Date;
 import java.util.Set;
 
 @Getter
@@ -18,10 +17,10 @@ import java.util.Set;
 public class ScheduleRequest {
     private final AppUser appUser;
     private final String name;
-    private final Date startTime;
-    private final Date endTime;
-    private final Date startDay;
-    private final Date endDay;
+    private final String startTime;
+    private final String endTime;
+    private final String startDay;
+    private final String endDay;
     private final String detail;
     private final Set<ScheduleRepeatType> repeatType;
 }
