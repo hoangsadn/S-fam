@@ -43,7 +43,7 @@ public class ImageController {
     }
 
     @PostMapping(
-            path = "{album}/album/upload",
+            path = "album/{album}/upload",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -53,7 +53,7 @@ public class ImageController {
     }
 
     @PostMapping(
-            path = "{email}/item/{item}/upload",
+            path = "item/{item}/upload",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )

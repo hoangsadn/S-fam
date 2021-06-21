@@ -24,7 +24,7 @@ public class Schedule {
     @SequenceGenerator(
             name = "person_schedule_sequence",
             sequenceName = "event_sequence",
-            allocationSize = 10
+            allocationSize = 1
     )
     @Id
     @GeneratedValue(

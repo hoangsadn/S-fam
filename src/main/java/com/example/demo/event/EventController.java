@@ -22,7 +22,7 @@ public class EventController {
 //        return eventService.getEventByEmail(email);
 //    }
 
-    @GetMapping()
+    @GetMapping(path="events")
     public List<Event> getEvents(){
         return eventService.getEvents();
     }

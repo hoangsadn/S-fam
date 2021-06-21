@@ -1,5 +1,6 @@
 package com.example.demo.album;
 
+import com.example.demo.event.Event;
 import com.example.demo.note.Note;
 import com.example.demo.user.AppUser;
 import com.example.demo.user.AppUserService;
@@ -14,6 +15,7 @@ import java.util.Optional;
 public class AlbumService {
     private final AppUserService appUserService;
     private final AlbumRepository albumRepository;
+
 
     public String createAlbum(String email, String name) {
         Optional<AppUser> appUser = appUserService.findAppUserByEmail(email);
@@ -37,5 +39,38 @@ public class AlbumService {
 
     public Optional<Album> findById(Long id) {
         return albumRepository.findById(id);
+    }
+
+    public Album getAlbumById(Long id) {
+        return albumRepository.findById(id).get();
+    }
+
+    public List<Album> getAlbums() {
+        return albumRepository.findAll();
+    }
+
+    public String editAlbum(Long id, AlbumRequest request) {
+        Optional<Album> album = albumRepository.findById(id);
+        if (!album.isPresent())
+        {
+            return  "id not found";
+        }
+        album.get().setName(request.getName());
+
+        album.get().setSetImg(request.getSetImg());
+
+        albumRepository.save(album.get());
+
+        return "edit album success";
+    }
+
+    public String delAlbum(Long id) {
+        Optional<Album> album = albumRepository.findById(id);
+        if (!album.isPresent())
+        {
+            return "id not found";
+        }
+        albumRepository.delete(album.get());
+        return "delete album success";
     }
 }

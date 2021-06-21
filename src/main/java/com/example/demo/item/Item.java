@@ -38,10 +38,11 @@ public class Item {
     private String imgName;
 
     @ManyToOne
-    @JsonIgnoreProperties({"fullName","gender","dob","pinCode",
+    @JsonIgnoreProperties({"fullName","gender","dob","pinCode","phoneNumber",
             "family","schedules","userLogin","eventSet","appUserSchedule"
             ,"notes","appUserNote",
-            "items","appUserItem"})
+            "items","appUserItem",
+            "albums","appUserAlbum"})
     @JoinColumn(
             nullable = false,
             name = "app_user_id",

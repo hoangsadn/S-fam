@@ -45,6 +45,7 @@ public class RegistrationService {
         userLoginService.signUpUser(userLogin);
         AppUser appUser = new AppUser(request.getEmail(),
                 request.getFullName(),
+                request.getPhoneNumber(),
                 request.getGender(),
                 request.getDob(),userLogin.get());
 

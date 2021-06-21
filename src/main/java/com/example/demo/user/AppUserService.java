@@ -40,10 +40,7 @@ public class AppUserService {
         appUser.setImgUrl(imgUrl);
         appUserRepository.save(appUser);
     }
-    public void setSetImgUrl(AppUser appUser, List<String> imgUrl){
-        appUser.setSetImg(imgUrl);
-        appUserRepository.save(appUser);
-    }
+
 
 
 }

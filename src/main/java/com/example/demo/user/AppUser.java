@@ -1,6 +1,7 @@
 package com.example.demo.user;
 
 
+import com.example.demo.album.Album;
 import com.example.demo.event.Event;
 import com.example.demo.family.Family;
 import com.example.demo.item.Item;
@@ -23,9 +24,10 @@ import java.util.*;
 @NoArgsConstructor
 public class AppUser implements Serializable {
 
-    public AppUser(String email, String fullName, String gender, String dob,UserLogin userLogin) {
+    public AppUser(String email, String fullName,String phoneNumber, String gender, String dob,UserLogin userLogin) {
         this.email = email;
         this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
         this.gender = gender;
         this.dob = dob;
         this.userLogin = userLogin;
@@ -35,7 +37,7 @@ public class AppUser implements Serializable {
     @SequenceGenerator(
             name = "app_user_sequence",
             sequenceName = "app_user_sequence",
-            allocationSize = 10
+            allocationSize = 1
     )
     @Id
     @GeneratedValue(
@@ -50,17 +52,11 @@ public class AppUser implements Serializable {
     private String pinCode;
     private String imgUrl;
     private String email;
-
-    @ElementCollection
-    private List<String> setImg;
+    private String phoneNumber;
 
     @JsonIgnore
     public Optional<String> getUserProfileImageLink() {
         return Optional.ofNullable(imgUrl);
-    }
-
-    public List<String> getUserSetImg() {
-        return setImg;
     }
 
     @ManyToOne
@@ -76,6 +72,9 @@ public class AppUser implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "appUserItem")
     private Set<Item> items  = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "appUserAlbum")
+    private Set<Album> albums  = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="user_login",referencedColumnName = "email")

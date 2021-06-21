@@ -22,7 +22,7 @@ public class Event {
     @SequenceGenerator(
             name = "event_sequence",
             sequenceName = "event_sequence",
-            allocationSize = 10
+            allocationSize = 1
     )
     @Id
     @GeneratedValue(

@@ -1,7 +1,9 @@
 package com.example.demo.album;
 
+import com.example.demo.constant.Constant;
 import com.example.demo.user.AppUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,7 +38,11 @@ public class Album {
     private List<String> setImg;
 
     @ManyToOne
-    @JsonIgnore
+    @JsonIgnoreProperties({"fullName","gender","dob","pinCode","phoneNumber",
+            "family","schedules","userLogin","eventSet","appUserSchedule"
+            ,"notes","appUserNote",
+            "items","appUserItem",
+            "albums","appUserAlbum"})
     @JoinColumn(
             nullable = false,
             name = "app_user_id",
