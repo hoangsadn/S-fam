@@ -1,28 +1,38 @@
 package com.example.demo.event;
 
+import com.example.demo.SpringBootPushNotification.model.PushNotificationRequest;
+import com.example.demo.SpringBootPushNotification.service.PushNotificationService;
 import com.example.demo.user.AppUser;
 import com.example.demo.user.AppUserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
+@Log4j2
 public class EventService {
     private final EventRepository eventRepository;
     private final AppUserService appUserService;
-    private Set<AppUser> appUserSet ;
+    private Set<AppUser> appUserSet;
+    private PushNotificationService pushNotificationService;
+
+    @Autowired
+    ThreadPoolTaskScheduler taskScheduler;
 
     @Transactional
     public String createEvent(EventRequest request) {
         appUserSet = new HashSet<>();
-        for (String email : request.getAppUserSet()){
+        for (String email : request.getAppUserSet()) {
             appUserSet.add(appUserService.findAppUserByEmail(email).get());
         }
 
@@ -37,16 +47,43 @@ public class EventService {
                 request.getDetail());
 
         eventRepository.save(event);
+        request.setId(event.getId());
+
+        if (request.getEventRemindType() != EventRemindType.NONE) {
+            LocalDateTime date = LocalDateTime.now().plusMinutes(1);
+            log.info(date);
+
+            String minutes = String.valueOf(date.getMinute());
+            String Hour = String.valueOf(date.getHour());
+            String Day = String.valueOf(date.getDayOfMonth());
+            String Month = String.valueOf(date.getMonthValue());
+
+
+            log.info("0 " + minutes + " " + Hour + " " + Day + " " + Month + " *");
+            CronTrigger cronTrigger
+                    = new CronTrigger("0 " + minutes + " " + Hour + " " + Day + " " + Month + " *");
+
+            taskScheduler.schedule(RunnableTask(request), cronTrigger);
+            log.info("create event");
+
+            switch (request.getEventRemindType()) {
+                case MINUTE:
+
+                case HOUR:
+
+                case DAY:
+            }
+        }
+
 
         return "create event success";
     }
 
     @Transactional
-    public String delEvent(Long id){
+    public String delEvent(Long id) {
 
         Optional<Event> event = eventRepository.findById(id);
-        if (!event.isPresent())
-        {
+        if (!event.isPresent()) {
             return "id not found";
         }
         eventRepository.delete(event.get());
@@ -58,7 +95,7 @@ public class EventService {
     public String editEvent(Long id, EventRequest request) {
 
         appUserSet = new HashSet<>();
-        for (String email : request.getAppUserSet()){
+        for (String email : request.getAppUserSet()) {
             appUserSet.add(appUserService.findAppUserByEmail(email).get());
         }
 
@@ -81,8 +118,7 @@ public class EventService {
         return "edit success";
     }
 
-    public Event getEventById(Long id)
-    {
+    public Event getEventById(Long id) {
         return eventRepository.findById(id).get();
     }
 
@@ -90,11 +126,27 @@ public class EventService {
         return eventRepository.findAll();
     }
 
-//    public List<Event> getEventByEmail(String email) throws IllegalAccessException {
-//        Optional<AppUser> appUser = appUserService.findAppUserByEmail(email);
-//        if (!appUser.isPresent()) {
-//            throw new IllegalAccessException("not found");
-//        }
-//        return eventRepository.findAllByAppUserSetIsContaining(appUser.get());
-//    }
+
+    public Runnable RunnableTask(EventRequest eventRequest) {
+
+        return new Runnable() {
+
+            @Override
+            public void run() {
+                PushNotificationRequest request = new PushNotificationRequest();
+                request.setTitle(eventRequest.getName());
+                request.setMessage(eventRequest.getDetail());
+                request.setToken("dNKp3kH2OrE:APA91bHpVmwMFRnMkBKkZFfo_z96B63DK3ka-1-4i2bAQYmWfnBlHvJktFB8vCkxTwVWAU9fSjfSIvq0v3q4n68aFgMqhXhEZlqF7sXgCprm3kK_oHepsq75nOjU8bHB-MKoY-js9mqg");
+                request.setTopic("global");
+
+                log.info("runable ", request);
+
+                Map<String, String> map = new HashMap<>();
+                map.put("id",eventRequest.getId().toString());
+
+                pushNotificationService.sendPushNotificationCustomDataWithTopic(map,request);
+            }
+
+        };
+    }
 }

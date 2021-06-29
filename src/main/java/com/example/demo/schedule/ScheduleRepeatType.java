@@ -7,5 +7,6 @@ public enum ScheduleRepeatType {
     THURSDAY,
     FRIDAY,
     SATURDAY,
-    SUNDAY
+    SUNDAY,
+    NONE
 }

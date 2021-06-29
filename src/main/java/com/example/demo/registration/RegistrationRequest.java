@@ -18,6 +18,6 @@ public class RegistrationRequest {
     private final String password;
     private final String gender;
     private final String dob;
-
-
+    private final String imgUrl;
+    private final String pinCode;
 }
