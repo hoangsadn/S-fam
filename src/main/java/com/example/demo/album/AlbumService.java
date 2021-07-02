@@ -73,4 +73,7 @@ public class AlbumService {
         albumRepository.delete(album.get());
         return "delete album success";
     }
+    public List<Album> searchAlbumByName(String name) {
+        return albumRepository.findAllByNameIsContaining(name);
+    }
 }

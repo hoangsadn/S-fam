@@ -1,5 +1,6 @@
 package com.example.demo.album;
 
+import com.example.demo.event.Event;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,4 +36,8 @@ public class AlbumController {
         return albumService.delAlbum(id);
     }
 
+    @GetMapping(path="search")
+    public List<Album> searchEventByName(@RequestParam("name") String name){
+        return albumService.searchAlbumByName(name);
+    }
 }

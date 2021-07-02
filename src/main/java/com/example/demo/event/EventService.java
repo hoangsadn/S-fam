@@ -14,7 +14,12 @@ import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -51,7 +56,15 @@ public class EventService {
 
         if (request.getEventRemindType() != EventRemindType.NONE) {
             LocalDateTime date = LocalDateTime.now().plusMinutes(1);
+
+//            String sDate1="2021-08-15 00:00:00.000";
+//            sDate1 = sDate1.substring(0,sDate1.indexOf(" "));
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
+//            LocalDateTime dateTime = LocalDate.parse(sDate1,formatter).atStartOfDay();
+
+
             log.info(date);
+            //log.info("converted", dateTime);
 
             String minutes = String.valueOf(date.getMinute());
             String Hour = String.valueOf(date.getHour());
@@ -136,8 +149,7 @@ public class EventService {
                 PushNotificationRequest request = new PushNotificationRequest();
                 request.setTitle(eventRequest.getName());
                 request.setMessage(eventRequest.getDetail());
-                request.setToken("dNKp3kH2OrE:APA91bHpVmwMFRnMkBKkZFfo_z96B63DK3ka-1-4i2bAQYmWfnBlHvJktFB8vCkxTwVWAU9fSjfSIvq0v3q4n68aFgMqhXhEZlqF7sXgCprm3kK_oHepsq75nOjU8bHB-MKoY-js9mqg");
-                request.setTopic("global");
+                request.setTopic("template_notification");
 
                 log.info("runable ", request);
 

@@ -12,4 +12,8 @@ public interface NoteRepository extends JpaRepository<Note,Long> {
 
 
     Optional<Note> findByIdAndAppUserNoteId(Long id, Long appid);
+
+    List<Note> findAllByNameIsContaining(String name);
+
+    Optional<Note> findByNameIsContaining(String name);
 }

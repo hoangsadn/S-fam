@@ -1,5 +1,7 @@
 package com.example.demo.registration;
 
+import com.example.demo.location.Location;
+import com.example.demo.location.LocationRepository;
 import com.example.demo.user.AppUser;
 import com.example.demo.user.AppUserRepository;
 import com.example.demo.user.AppUserService;
@@ -30,7 +32,7 @@ public class RegistrationService {
     private final EmailSender emailSender;
     private final AppUserRepository appUserRepository;
     private final UserLoginRepository userLoginRepository;
-
+    private final LocationRepository locationRepository;
 
     public String register(RegistrationRequest request) {
         boolean isValidEmail = userLoginRepository.findByEmail(request.getEmail()).isPresent();
@@ -49,7 +51,13 @@ public class RegistrationService {
                 request.getGender(),
                 request.getDob(),userLogin.get());
 
+
+
         appUserRepository.save(appUser);
+
+        Location location = new Location();
+        location.setAppUser(appUser);
+        locationRepository.save(location);
         return "register success";
     }
 

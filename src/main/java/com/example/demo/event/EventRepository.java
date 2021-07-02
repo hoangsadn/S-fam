@@ -14,7 +14,4 @@ import java.util.UUID;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
-
-    //<Event> findAllByAppUserSetIsContaining(AppUser appUser);
-
 }

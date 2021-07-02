@@ -53,6 +53,7 @@ public class AppUser implements Serializable {
     private String imgUrl;
     private String email;
     private String phoneNumber;
+    @JsonIgnore
     private String firebaseToken;
 
 

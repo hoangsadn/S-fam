@@ -23,7 +23,6 @@ import static org.apache.http.entity.ContentType.*;
 public class AppUserService {
 
     private final AppUserRepository appUserRepository;
-
     public Optional<AppUser> findAppUserByEmail(String email) {
         return appUserRepository.findAppUserByEmail(email);
     }

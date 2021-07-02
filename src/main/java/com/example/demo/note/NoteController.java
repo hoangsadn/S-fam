@@ -38,5 +38,10 @@ public class NoteController {
     public String editSchedule(@PathVariable("email")String email, @PathVariable("id") Long id,@RequestBody NoteRequest request) {
         return noteService.editNote(email,id,request);
     }
+    @GetMapping(path="search")
+    public List<Note> searchByName(@RequestParam("name") String name){
+        return noteService.searchByName(name);
+    }
+
 
 }

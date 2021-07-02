@@ -26,7 +26,8 @@ public class PushNotificationController {
     @PostMapping("/notification/topic")
     public ResponseEntity sendNotification(@RequestBody PushNotificationRequest request) {
         pushNotificationService.sendPushNotificationWithoutData(request);
-        return new ResponseEntity<>(new PushNotificationResponse(HttpStatus.OK.value(), "Notification has been sent."), HttpStatus.OK);
+
+        return new ResponseEntity<>(new PushNotificationResponse(HttpStatus.OK.value(), "Notification topic has been sent."), HttpStatus.OK);
     }
 
     @PostMapping("/notification/token")

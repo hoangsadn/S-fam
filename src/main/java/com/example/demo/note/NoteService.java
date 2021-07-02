@@ -73,4 +73,7 @@ public class NoteService {
         return "edit success";
     }
 
+    public List<Note> searchByName(String name) {
+       return noteRepository.findAllByNameIsContaining(name);
+    }
 }

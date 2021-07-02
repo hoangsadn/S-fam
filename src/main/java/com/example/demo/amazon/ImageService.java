@@ -32,6 +32,7 @@ public class ImageService {
     private final AppUserService appUserService;
     private final ItemService itemService;
     private final AlbumService albumService;
+
     @Transactional
     public void uploadUserProfileImage(String email, MultipartFile file) {
         // 1. Check if image is not empty
