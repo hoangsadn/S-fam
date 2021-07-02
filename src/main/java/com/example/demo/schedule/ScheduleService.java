@@ -1,20 +1,36 @@
 package com.example.demo.schedule;
 
+import com.example.demo.SpringBootPushNotification.model.PushNotificationRequest;
+import com.example.demo.SpringBootPushNotification.service.PushNotificationService;
+import com.example.demo.event.EventRemindType;
 import com.example.demo.event.EventRequest;
 import com.example.demo.user.AppUser;
 import com.example.demo.user.AppUserService;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Log4j2
 public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final AppUserService appUserService;
+    private PushNotificationService pushNotificationService;
+
+    @Autowired
+    ThreadPoolTaskScheduler taskScheduler;
 
     @Transactional
     public String createPersonSchedule(String email, ScheduleRequest request) {
@@ -34,6 +50,28 @@ public class ScheduleService {
                 request.getDetail());
 
         scheduleRepository.save(schedule);
+        request.setId(schedule.getId());
+        request.setToken(appUser.get().getFirebaseToken());
+
+        LocalDateTime date = convertToLocalDateTime(request.getStartDay());
+        LocalTime time = convertToLocalTime(request.getStartTime());
+
+
+        log.info(date +" "+ time);
+
+        String minutes = String.valueOf(time.getMinute());
+        String Hour = String.valueOf(time.getHour());
+        String Day = String.valueOf(date.getDayOfMonth());
+        String Month = String.valueOf(date.getMonthValue());
+        String Year = String.valueOf(date.getYear());
+
+        log.info("0 " + minutes + " " + Hour + " " + Day + " " + Month + " *");
+        CronTrigger cronTrigger
+                = new CronTrigger("0 " + minutes + " " + Hour + " " + Day + " " + Month + " *");
+
+
+        taskScheduler.schedule(RunnableTask(request), cronTrigger);
+
 
         return "create person schedule success";
     }
@@ -91,4 +129,36 @@ public class ScheduleService {
 //            new IllegalStateException("not found user");
 //        return scheduleRepository.findAllByAppUserSchedule(appUser.get());
 //    }
+
+    public Runnable RunnableTask(ScheduleRequest eventRequest) {
+
+        return new Runnable() {
+
+            @Override
+            public void run() {
+                PushNotificationRequest request = new PushNotificationRequest();
+                request.setTitle(eventRequest.getName());
+                request.setMessage(eventRequest.getDetail());
+                request.setToken(eventRequest.getToken());
+
+                log.info("runable schedule ", request);
+
+                Map<String, String> map = new HashMap<>();
+                map.put("type","schedule");
+                map.put("id",eventRequest.getId().toString());
+
+                pushNotificationService.sendPushNotificationToTokenWithData(map,request);
+            }
+
+        };
+    }
+
+    public LocalDateTime convertToLocalDateTime(String date){
+        date = date.replace(" ","T");
+        return LocalDateTime.parse(date);
+    }
+
+    public LocalTime convertToLocalTime(String time){
+        return LocalTime.parse(time);
+    }
 }

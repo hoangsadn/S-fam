@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 
 import lombok.extern.log4j.Log4j2;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
@@ -19,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -37,9 +39,14 @@ public class EventService {
     @Transactional
     public String createEvent(EventRequest request) {
         appUserSet = new HashSet<>();
+        List<String> listToken = new ArrayList<>();
         for (String email : request.getAppUserSet()) {
-            appUserSet.add(appUserService.findAppUserByEmail(email).get());
+            AppUser appUser = appUserService.findAppUserByEmail(email).get();
+            appUserSet.add(appUser);
+            listToken.add(appUser.getFirebaseToken());
+
         }
+        request.setListToken(listToken);
 
         Event event = new Event(request.getName(),
                 request.getDay(),
@@ -55,36 +62,36 @@ public class EventService {
         request.setId(event.getId());
 
         if (request.getEventRemindType() != EventRemindType.NONE) {
-            LocalDateTime date = LocalDateTime.now().plusMinutes(1);
+            LocalDateTime date = convertToLocalDateTime(request.getDay());
+            LocalTime time = convertToLocalTime(request.getStartTime());
+            if (request.getEventRemindType() != EventRemindType.NONE)
+            {
+                time = time.minusMinutes(request.getRemindNum());
+            }
 
-//            String sDate1="2021-08-15 00:00:00.000";
-//            sDate1 = sDate1.substring(0,sDate1.indexOf(" "));
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
-//            LocalDateTime dateTime = LocalDate.parse(sDate1,formatter).atStartOfDay();
+            log.info(date +" "+ time);
 
-
-            log.info(date);
-            //log.info("converted", dateTime);
-
-            String minutes = String.valueOf(date.getMinute());
-            String Hour = String.valueOf(date.getHour());
+            String minutes = String.valueOf(time.getMinute());
+            String Hour = String.valueOf(time.getHour());
             String Day = String.valueOf(date.getDayOfMonth());
             String Month = String.valueOf(date.getMonthValue());
-
+            String Year = String.valueOf(date.getYear());
 
             log.info("0 " + minutes + " " + Hour + " " + Day + " " + Month + " *");
             CronTrigger cronTrigger
                     = new CronTrigger("0 " + minutes + " " + Hour + " " + Day + " " + Month + " *");
 
+
             taskScheduler.schedule(RunnableTask(request), cronTrigger);
-            log.info("create event");
 
-            switch (request.getEventRemindType()) {
-                case MINUTE:
+            //Repeat , do latter
+            switch (request.getRepeatType()) {
+                case WEEK:
 
-                case HOUR:
+                case MONTH:
 
-                case DAY:
+                case YEAR:
+
             }
         }
 
@@ -149,16 +156,26 @@ public class EventService {
                 PushNotificationRequest request = new PushNotificationRequest();
                 request.setTitle(eventRequest.getName());
                 request.setMessage(eventRequest.getDetail());
-                request.setTopic("template_notification");
+                request.setListToken(eventRequest.getListToken());
 
                 log.info("runable ", request);
 
                 Map<String, String> map = new HashMap<>();
+                map.put("type","event");
                 map.put("id",eventRequest.getId().toString());
 
-                pushNotificationService.sendPushNotificationCustomDataWithTopic(map,request);
+                pushNotificationService.sendPushNotificationCustomDataWithManyToken(map,request);
             }
 
         };
+    }
+
+    public LocalDateTime convertToLocalDateTime(String date){
+        date = date.replace(" ","T");
+        return LocalDateTime.parse(date);
+    }
+
+    public LocalTime convertToLocalTime(String time){
+        return LocalTime.parse(time);
     }
 }

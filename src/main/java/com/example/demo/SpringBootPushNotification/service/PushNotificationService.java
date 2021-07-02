@@ -35,9 +35,9 @@ public class PushNotificationService {
         }
     }
 
-    public void sendPushNotificationCustomDataWithTopic(Map<String, String> data,PushNotificationRequest request) {
+    public void sendPushNotificationCustomDataWithManyToken(Map<String, String> data,PushNotificationRequest request) {
         try {
-            fcmService.sendMessageCustomDataWithTopic(data, request);
+            fcmService.sendMessageCustomDataWithManyToken(data, request);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -60,9 +60,9 @@ public class PushNotificationService {
     }
 
 
-    public void sendPushNotificationToToken(PushNotificationRequest request) {
+    public void sendPushNotificationToTokenWithData(Map<String, String> data,PushNotificationRequest request) {
         try {
-            fcmService.sendMessageToToken(request);
+            fcmService.sendMessageToTokenWithData(data,request);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }

@@ -1,9 +1,7 @@
 package com.example.demo.SpringBootPushNotification.service;
 
 import com.example.demo.SpringBootPushNotification.model.PushNotificationRequest;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
+import com.google.firebase.messaging.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.extern.log4j.Log4j2;
@@ -46,9 +44,9 @@ public class FCMService {
         logger.info("Sent message without data. Topic: " + request.getTopic() + ", " + response);
     }
 
-    public void sendMessageToToken(PushNotificationRequest request)
+    public void sendMessageToTokenWithData(Map<String, String> data,PushNotificationRequest request)
             throws InterruptedException, ExecutionException {
-        Message message = getPreconfiguredMessageToToken(request);
+        Message message = getPreconfiguredMessageWithData(data,request);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String jsonOutput = gson.toJson(message);
         String response = sendAndGetResponse(message);
@@ -59,6 +57,9 @@ public class FCMService {
         return FirebaseMessaging.getInstance().sendAsync(message).get();
     }
 
+    private String sendMultiAndGetResponse(MulticastMessage message) throws FirebaseMessagingException {
+        return FirebaseMessaging.getInstance().sendMulticast(message).getResponses().toString();
+    }
 
     private Message getPreconfiguredMessageToToken(PushNotificationRequest request) {
         return getPreconfiguredMessageBuilder(request).setToken(request.getToken())
@@ -84,13 +85,24 @@ public class FCMService {
 
 
     private Message getMessageWithDataCustomWithTopic(Map<String, String> data, PushNotificationRequest request) {
-        log.info(request.getTitle()+request.getMessage());
         return  getPreconfiguredMessageBuilder(request).
                 putAllData(data).setTopic(request.getTopic())
                 .build();
     }
 
-
-
-
+    private MulticastMessage getPreconfiguredMultiMessageWithData(Map<String, String> data, PushNotificationRequest request) {
+        return MulticastMessage.builder().setNotification(
+                new Notification(request.getTitle(), request.getMessage()))
+                .putAllData(data)
+                .addAllTokens(request.getListToken())
+                .build();
+    }
+    public void sendMessageCustomDataWithManyToken(Map<String, String> data, PushNotificationRequest request)
+            throws FirebaseMessagingException {
+        MulticastMessage message = getPreconfiguredMultiMessageWithData(data, request);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String jsonOutput = gson.toJson(message);
+        String response = sendMultiAndGetResponse(message);
+        logger.info("Sent multi message with data: " + response+ " msg "+jsonOutput);
+    }
 }

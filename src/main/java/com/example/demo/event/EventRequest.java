@@ -8,6 +8,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 @Getter
 @Setter
@@ -18,6 +19,7 @@ public class EventRequest {
     private final String name;
     private Long id;
     private final Set<String> appUserSet;
+    private List<String> listToken;
     private final String startTime;
     private final String endTime;
     private final String day;

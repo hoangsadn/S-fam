@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -15,26 +17,10 @@ public class PushNotificationRequest {
 
 
     private String topic;
+    private List<String> listToken;
     private String token;
 
 
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
 
-    public String getTitle() {
-        return title;
-    }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public String getToken() {
-        return token;
-    }
 }
