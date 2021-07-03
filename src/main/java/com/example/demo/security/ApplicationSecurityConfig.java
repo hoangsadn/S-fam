@@ -4,6 +4,7 @@ import com.example.demo.userlogin.UserLoginService;
 import com.example.demo.jwt.JwtConfig;
 import com.example.demo.jwt.JwtTokenVerifier;
 import com.example.demo.jwt.JwtUsernameAndPasswordAuthenticationFilter;
+import com.example.demo.userlogin.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,8 +52,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig),JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+
                 .antMatchers("/api/v1/**").permitAll()
-                //.antMatchers("/api/**").hasRole(USER.toString())
+                //.antMatchers("/api/v1/schedule/**").hasRole(UserRole.USER.name())
                 .anyRequest()
                 .authenticated();
     }

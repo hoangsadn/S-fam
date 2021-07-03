@@ -123,12 +123,10 @@ public class ScheduleService {
         return scheduleRepository.findAll();
     }
 
-//    public List<Schedule> getPersonSchedulesByEmail(String email) {
-//        Optional<AppUser> appUser =  appUserService.findAppUserByEmail(email);
-//        if (!appUser.isPresent())
-//            new IllegalStateException("not found user");
-//        return scheduleRepository.findAllByAppUserSchedule(appUser.get());
-//    }
+    public List<Schedule> getPersonSchedulesByEmail(String email) {
+        return scheduleRepository.findAllByAppUserSchedule_Email(email);
+    }
+
 
     public Runnable RunnableTask(ScheduleRequest eventRequest) {
 

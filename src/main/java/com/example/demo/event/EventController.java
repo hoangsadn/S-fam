@@ -41,4 +41,10 @@ public class EventController {
     public String editEvent(@PathVariable("id") Long id,@RequestBody EventRequest eventRequest) {
         return eventService.editEvent(id,eventRequest);
     }
+
+    @GetMapping(path="/email/{email}")
+    public List<Event> getEventByEmail(@PathVariable("email") String email){
+        return eventService.getEventByEmail(email);
+    }
+
 }

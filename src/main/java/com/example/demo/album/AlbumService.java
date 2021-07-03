@@ -25,9 +25,8 @@ public class AlbumService {
         }
 
         Album album = new Album(name,appUser.get());
-
+        album.setFamilyAlbum(appUser.get().getFamily());
         albumRepository.save(album);
-
         return "create album success";
 
     }
@@ -73,7 +72,13 @@ public class AlbumService {
         albumRepository.delete(album.get());
         return "delete album success";
     }
-    public List<Album> searchAlbumByName(String name) {
-        return albumRepository.findAllByNameIsContaining(name);
+    public List<Album> searchAlbumByName(String name,Long id) {
+        Optional<AppUser> appUser = appUserService.findAppUserById(id);
+        return albumRepository.findAllByNameIsContainingAndFamilyAlbumId(name,appUser.get().getFamily().getId());
+    }
+
+    public List<Album> getAlbumByEmail(String email) {
+        Optional<AppUser> appUser = appUserService.findAppUserByEmail(email);
+        return albumRepository.findAllByFamilyAlbumId(appUser.get().getFamily().getId());
     }
 }

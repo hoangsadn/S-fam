@@ -88,4 +88,13 @@ public class ItemService {
         item.setImgName(imgUrl);
         itemRepository.save(item);
     }
+
+    public List<Item> getItemsByEmail(String email) {
+       return itemRepository.findAllByAppUserItem_Email(email);
+    }
+
+    public List<Item> searchByName(String email,Long id) {
+        return itemRepository.findAllByNameIsContainingAndAppUserItemId(email,id);
+    }
+
 }

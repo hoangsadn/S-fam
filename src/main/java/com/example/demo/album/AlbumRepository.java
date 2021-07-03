@@ -8,5 +8,7 @@ import java.util.List;
 @Repository
 interface AlbumRepository extends JpaRepository<Album,Long> {
 
-    List<Album> findAllByNameIsContaining(String name);
+    List<Album> findAllByNameIsContainingAndFamilyAlbumId(String name,Long id);
+
+    List<Album> findAllByFamilyAlbumId(Long id);
 }

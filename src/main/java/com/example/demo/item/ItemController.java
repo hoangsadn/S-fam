@@ -39,5 +39,15 @@ public class ItemController {
         return itemService.editNote(email,id,request);
     }
 
+    @GetMapping(path="email/{email}")
+    public List<Item> getItemsByEmail(@PathVariable("email") String email){
+        return itemService.getItemsByEmail(email);
+    }
+
+    @GetMapping(path="search")
+    public List<Item> searchByName(@RequestParam("name") String name, @RequestParam("userid")Long id){
+        return itemService.searchByName(name,id);
+    }
+
 
 }

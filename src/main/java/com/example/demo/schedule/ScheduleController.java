@@ -1,7 +1,9 @@
 package com.example.demo.schedule;
 
 import com.example.demo.event.EventRequest;
+import com.example.demo.userlogin.UserRole;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path="api/v1/schedule")
 @AllArgsConstructor
+@CrossOrigin
 public class ScheduleController {
     private final ScheduleService scheduleService;
 
@@ -18,6 +21,7 @@ public class ScheduleController {
     }
 
     @GetMapping(path="{id}")
+    @PreAuthorize("hasAnyRole('USER')")
     public Schedule getScheduleById(@PathVariable("id") Long id){
         return scheduleService.getPersonScheduleById(id);
     }
@@ -38,10 +42,10 @@ public class ScheduleController {
         return scheduleService.editPersonSchedule(email,id,scheduleRequest);
     }
 
-//    @GetMapping()
-//    public List<Schedule> getSchedulesByEmail(@RequestParam("email") String email){
-//        return scheduleService.getPersonSchedulesByEmail(email);
-//    }
+    @GetMapping(path="email/{email}")
+    public List<Schedule> getSchedulesByEmail(@PathVariable("email") String email){
+        return scheduleService.getPersonSchedulesByEmail(email);
+    }
 
 
 

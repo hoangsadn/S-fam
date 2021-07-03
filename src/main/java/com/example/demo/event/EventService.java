@@ -178,4 +178,12 @@ public class EventService {
     public LocalTime convertToLocalTime(String time){
         return LocalTime.parse(time);
     }
+
+    @Transactional
+    public List<Event> getEventByEmail(String email) {
+        Optional<AppUser> appUser = appUserService.findAppUserByEmail(email);
+        appUserSet = new HashSet<>();
+        appUserSet.add(appUser.get());
+      return eventRepository.findAllByAppUserSetIn(appUserSet);
+    }
 }

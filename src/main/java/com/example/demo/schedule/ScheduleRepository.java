@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 interface ScheduleRepository extends JpaRepository <Schedule,Long> {
 
-    //List<Schedule> findAllByAppUserSchedule(AppUser appUser);
+    List<Schedule> findAllByAppUserSchedule_Email(String email);
 
 
     Optional<Schedule> findByIdAndAppUserScheduleId(Long id,Long appUserId);

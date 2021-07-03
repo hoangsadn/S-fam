@@ -27,6 +27,10 @@ public class AppUserService {
         return appUserRepository.findAppUserByEmail(email);
     }
 
+    public Optional<AppUser> findAppUserById(Long id) {
+        return appUserRepository.findById(id);
+    }
+
     public void insertFamily(AppUser appUser, Family family){
         appUser.setFamily(family);
         appUserRepository.save(appUser);

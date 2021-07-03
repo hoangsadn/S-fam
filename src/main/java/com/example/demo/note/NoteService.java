@@ -73,7 +73,11 @@ public class NoteService {
         return "edit success";
     }
 
-    public List<Note> searchByName(String name) {
-       return noteRepository.findAllByNameIsContaining(name);
+    public List<Note> searchByName(String name, Long id) {
+       return noteRepository.findAllByAppUserNoteIdAndNameIsContaining(id,name);
+    }
+
+    public List<Note> getNotesByEmail(String email) {
+        return noteRepository.findAllByAppUserNote_Email(email);
     }
 }

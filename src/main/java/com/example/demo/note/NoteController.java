@@ -39,8 +39,13 @@ public class NoteController {
         return noteService.editNote(email,id,request);
     }
     @GetMapping(path="search")
-    public List<Note> searchByName(@RequestParam("name") String name){
-        return noteService.searchByName(name);
+    public List<Note> searchByName(@RequestParam("name") String name ,@RequestParam("userid") Long id){
+        return noteService.searchByName(name,id);
+    }
+
+    @GetMapping(path="email/{email}")
+    public List<Note> getNotesByEmail(@PathVariable("email")String email){
+        return noteService.getNotesByEmail(email);
     }
 
 

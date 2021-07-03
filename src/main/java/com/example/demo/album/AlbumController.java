@@ -26,6 +26,7 @@ public class AlbumController {
     public List<Album> getAlbums(){
         return albumService.getAlbums();
     }
+
     @PutMapping(path="{id}/edit")
     public String getAlbums(@PathVariable("id") Long id,@RequestBody AlbumRequest request){
         return albumService.editAlbum(id,request);
@@ -37,7 +38,14 @@ public class AlbumController {
     }
 
     @GetMapping(path="search")
-    public List<Album> searchEventByName(@RequestParam("name") String name){
-        return albumService.searchAlbumByName(name);
+    public List<Album> searchEventByName(@RequestParam("name") String name ,@RequestParam("userid") Long id){
+        return albumService.searchAlbumByName(name,id);
     }
+
+
+    @GetMapping(path="email/{email}")
+    public List<Album> getAlbumByEmail(@PathVariable("email") String email){
+        return albumService.getAlbumByEmail(email);
+    }
+
 }

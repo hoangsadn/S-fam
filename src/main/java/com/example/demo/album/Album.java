@@ -1,6 +1,7 @@
 package com.example.demo.album;
 
 import com.example.demo.constant.Constant;
+import com.example.demo.family.Family;
 import com.example.demo.user.AppUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -9,7 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -50,4 +53,12 @@ public class Album {
     )
     private AppUser appUserAlbum;
 
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(
+            nullable = false,
+            name = "family_id",
+            referencedColumnName = "id"
+    )
+    private Family familyAlbum;
 }

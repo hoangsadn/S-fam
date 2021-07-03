@@ -1,5 +1,6 @@
 package com.example.demo.family;
 
+import com.example.demo.album.Album;
 import com.example.demo.user.AppUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -54,5 +55,10 @@ public class Family {
     public void addMember(AppUser appUser){
         memberSet.add(appUser);
     }
+
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "familyAlbum")
+    @JsonIgnore
+    private Set<Album> albums  = new HashSet<>();
 
 }
