@@ -1,13 +1,15 @@
 
 server:
+
   error:
     include-message: always
     include-binding-errors: always
 
 spring:
+
   datasource:
     password: thanhtrung123
-    url: jdbc:postgresql://database-s-fam.crptcm88verz.ap-southeast-1.rds.amazonaws.com:5432/postgres
+    url: jdbc:postgresql://database-1.cpbbvzlxbrh4.us-east-1.rds.amazonaws.com:5432/postgres
     username: postgres
 
   jpa:

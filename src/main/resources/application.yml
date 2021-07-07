@@ -1,11 +1,15 @@
 server:
+#  port: 5000
   error:
     include-message: always
     include-binding-errors: always
 
 spring:
+#  profiles:
+#    active: prod
   datasource:
     password: thanhtrung123
+#    url: jdbc:postgresql://database-1.cpbbvzlxbrh4.us-east-1.rds.amazonaws.com:5432/postgres
     url: jdbc:postgresql://localhost:5432/registration
     username: postgres
   jpa:
