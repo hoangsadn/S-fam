@@ -21,7 +21,6 @@ public class ScheduleController {
     }
 
     @GetMapping(path="{id}")
-    @PreAuthorize("hasAnyRole('USER')")
     public Schedule getScheduleById(@PathVariable("id") Long id){
         return scheduleService.getPersonScheduleById(id);
     }
