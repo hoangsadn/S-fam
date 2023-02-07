@@ -32,6 +32,13 @@ public class ProductController {
         return reviewRepository.findAllByProductId(id);
     }
 
+
+    @PostMapping("/{id}/reviews")
+    public Boolean insertReview(@PathVariable("id") Long id, @RequestBody Review review) {
+        LOGGER.info("review");
+        return productService.insertReview(id, review);
+    }
+
     @GetMapping("")
     public List<Product> getAllProducts() {
         LOGGER.info("all products");
@@ -47,7 +54,7 @@ public class ProductController {
 
 
     @PostMapping("")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public Boolean saveProduct(@RequestBody Product res ) {
         LOGGER.info("Insert id");
         return productService.insertProduct(res);

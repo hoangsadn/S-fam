@@ -22,13 +22,13 @@ public class OrderItem {
     private Integer qty;
     private String image;
     private String price;
-
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Product product ;
+    private Integer product;
+//
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "product_id")
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    private Product product ;
 
 
     @ManyToOne(cascade = CascadeType.ALL)

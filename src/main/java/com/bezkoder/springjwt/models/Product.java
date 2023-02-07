@@ -3,6 +3,7 @@ package com.bezkoder.springjwt.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -37,10 +38,10 @@ public class Product {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<Review> reviews  = new ArrayList<>();
-
-    @OneToOne(cascade = CascadeType.ALL,mappedBy = "product")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JsonIgnore
-    private OrderItem orderItem;
+//
+//    @OneToOne(cascade = CascadeType.ALL,mappedBy = "product")
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @JsonIgnore
+//    private OrderItem orderItem;
 }

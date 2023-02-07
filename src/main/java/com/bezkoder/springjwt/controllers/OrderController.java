@@ -4,6 +4,7 @@ import com.bezkoder.springjwt.models.Order;
 import com.bezkoder.springjwt.models.Product;
 import com.bezkoder.springjwt.models.Review;
 import com.bezkoder.springjwt.models.User;
+import com.bezkoder.springjwt.payload.request.OrderRequest;
 import com.bezkoder.springjwt.repository.ReviewRepository;
 import com.bezkoder.springjwt.security.jwt.JwtUtils;
 import com.bezkoder.springjwt.service.OrderService;
@@ -41,9 +42,11 @@ public class OrderController {
 
 
     @PostMapping("")
-    @PreAuthorize("hasRole('USER')")
-    public Order postOrder(Order order) {
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public Order postOrder(@RequestBody Order order,Authentication authentication) {
         LOGGER.info("create order");
+        User user =  jwtUtils.loadUserInfo(authentication);
+        order.setUsername(user.getName());
         return service.insertOrder(order);
     }
 

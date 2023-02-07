@@ -3,6 +3,7 @@ package com.bezkoder.springjwt.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +25,13 @@ public class Order {
     private Integer taxPrice;
     private Integer shippingPrice;
     private Integer totalPrice;
-    private Boolean isPaid;
+
+    private Boolean isPaid = false;
+
     private String paidAt;
-    private Boolean isDelivered;
+    private Boolean isDelivered = false;
     private String deliveredAt;
-    private String createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
 
     @OneToMany(cascade = CascadeType.ALL,
