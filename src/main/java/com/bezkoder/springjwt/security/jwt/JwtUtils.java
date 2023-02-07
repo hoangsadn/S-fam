@@ -2,10 +2,16 @@ package com.bezkoder.springjwt.security.jwt;
 
 import java.util.Date;
 
+import com.bezkoder.springjwt.models.User;
+import org.apache.tomcat.util.buf.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.bezkoder.springjwt.security.services.UserDetailsImpl;
@@ -21,6 +27,9 @@ public class JwtUtils {
   @Value("${bezkoder.app.jwtExpirationMs}")
   private int jwtExpirationMs;
 
+  @Autowired
+  AuthenticationManager authenticationManager;
+
   public String generateJwtToken(Authentication authentication) {
 
     UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
@@ -31,6 +40,12 @@ public class JwtUtils {
         .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
         .signWith(SignatureAlgorithm.HS512, jwtSecret)
         .compact();
+  }
+
+  public User loadUserInfo(Authentication authentication){
+    UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+    return new User(userPrincipal.getUsername(),userPrincipal.getEmail(), "");
+
   }
 
   public String getUserNameFromJwtToken(String token) {

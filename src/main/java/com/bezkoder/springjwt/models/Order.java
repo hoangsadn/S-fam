@@ -28,6 +28,7 @@ public class Order {
     private String paidAt;
     private Boolean isDelivered;
     private String deliveredAt;
+    private String createdAt;
 
 
     @OneToMany(cascade = CascadeType.ALL,

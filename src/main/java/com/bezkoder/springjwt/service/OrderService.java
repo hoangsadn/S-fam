@@ -15,10 +15,34 @@ public class OrderService {
     @Autowired
     private OrderRepository repository;
 
-    public List<Order> getListOrders(){
+    public List<Order> getListOrders(String username){
 
-        List<Order> orders = repository.findAll();
+        List<Order> orders = repository.findAllByUsername(username);
 
         return orders;
+    }
+
+    public List<Order> getAll(){
+        return repository.findAll();
+    }
+
+    public String delOrder(Long id){
+        repository.deleteById(id);
+        return "del order success";
+    }
+
+
+
+
+    public Order getOrderById(Long id){
+
+        Order order = repository.findFirstById(id).orElse(null);
+
+        return order;
+    }
+
+    public Order insertOrder(Order req){
+        repository.save(req);
+        return repository.findFirstByUsername(req.getUsername()).orElse(null);
     }
 }

@@ -9,11 +9,12 @@ public class JwtResponse {
   private String name;
   private String email;
 
-  public Boolean getAdmin() {
+
+  public Boolean getIsAdmin() {
     return isAdmin;
   }
 
-  public void setAdmin(Boolean admin) {
+  public void setIsAdmin(Boolean admin) {
     isAdmin = admin;
   }
 
