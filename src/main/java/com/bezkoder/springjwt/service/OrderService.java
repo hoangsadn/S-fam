@@ -55,6 +55,6 @@ public class OrderService {
             item.setOrder(order);
             orderItemRepository.save(item);
         });
-        return repository.findFirstByUsername(req.getUsername()).orElse(null);
+        return repository.findById(order.getId()).orElse(null);
     }
 }

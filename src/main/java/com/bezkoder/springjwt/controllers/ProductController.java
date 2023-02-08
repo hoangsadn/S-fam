@@ -35,7 +35,7 @@ public class ProductController {
 
     @PostMapping("/{id}/reviews")
     public Boolean insertReview(@PathVariable("id") Long id, @RequestBody Review review) {
-        LOGGER.info("review");
+        LOGGER.info("insert review");
         return productService.insertReview(id, review);
     }
 
@@ -58,6 +58,13 @@ public class ProductController {
     public Boolean saveProduct(@RequestBody Product res ) {
         LOGGER.info("Insert id");
         return productService.insertProduct(res);
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Boolean editProduct(@PathVariable Long id,@RequestBody Product res ) {
+        LOGGER.info("Edit id");
+        return productService.editProduct(id,res);
     }
 
 }

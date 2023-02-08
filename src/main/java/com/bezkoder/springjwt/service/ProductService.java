@@ -49,4 +49,8 @@ public class ProductService {
     }
 
 
+    public Boolean editProduct(Long id, Product res) {
+        repository.save(res);
+        return true;
+    }
 }
