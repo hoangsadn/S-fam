@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,10 +41,13 @@ public class ProductController {
     }
 
     @GetMapping("")
-    public List<Product> getAllProducts() {
+    public List<Product> getAllProducts(@RequestParam(required = false,defaultValue = "") String category,
+                                        @RequestParam(required = false,defaultValue = "") String sortOrder,
+                                        @RequestParam(required = false,defaultValue = "") String searchKeyword
+                                        ) {
         LOGGER.info("all products");
 
-        return productService.getListProduct();
+        return productService.getListProduct(category, sortOrder, searchKeyword);
     }
 
     @GetMapping("/{id}")

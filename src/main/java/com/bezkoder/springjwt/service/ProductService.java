@@ -7,8 +7,8 @@ import com.bezkoder.springjwt.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -19,9 +19,20 @@ public class ProductService {
     @Autowired
     private ReviewRepository reviewRepository;
 
-    public List<Product> getListProduct(){
+    public List<Product> getListProduct(String cate,String sort,String key){
 
         List<Product> products = repository.findAll();
+        if (!cate.equalsIgnoreCase("")){
+            products = products.stream().filter(item-> item.getCategory().equalsIgnoreCase(cate)).collect(Collectors.toList());
+        }
+        if (sort.equalsIgnoreCase("highest")){
+            Collections.sort(products, Comparator.comparing(Product::getPrice).reversed());
+        }
+        if (sort.equalsIgnoreCase("lowest")){
+            Collections.sort(products, Comparator.comparing(Product::getPrice));
+        }
+        if (!key.equalsIgnoreCase(""))
+            products = products.stream().filter(item->item.getName().contains(key)).collect(Collectors.toList());
 
         return products;
     }
